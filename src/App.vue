@@ -1,28 +1,57 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+     <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <pixi-renderer  :w="pixiWidth" :h="pixiHeight">
+      <pixi-Container
+        :x="pixiWidth/2" :y="pixiHeight/2"
+        @tick="tickInfo" @pointerdown="scaleObject"
+      >
+        <pixi-Sprite  :x="0" :y="0" imagePath="logo.png"/>
+      </pixi-container>
+    </pixi-renderer>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import PixiRenderer from './pixi/PixiRenderer.vue'
+import PixiSprite from './pixi/PixiSprite.vue'
+import PixiContainer from './pixi/PixiContainer.vue'
 
 export default {
-  name: 'app',
+  data() {
+    return {
+      pixiWidth: 800,
+      pixiHeight: 600
+    }
+  },
+
   components: {
-    HelloWorld
+    HelloWorld,
+    PixiRenderer,
+    PixiSprite,
+    PixiContainer
+  },
+
+  methods: {
+    scaleObject(container) {
+      container.scale.x *= 1.25;
+      container.scale.y *= 1.25;
+    },
+
+    tickInfo(container, delta) {
+      console.log(`Tick delta: ${delta}`)
+    }
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 </style>
