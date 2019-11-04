@@ -1,13 +1,14 @@
 <template>
   <div id="app">
-    <HelloWorld msg="vue component"/>
-    <pixi-renderer>
+    <HelloWorld msg="vue + pixi + dragonbones"/>
+    <pixi-renderer :w="800" :h="2000">
       <pixi-container
         :x="200" :y="200"
         msg="pixi container"
       >
-         <pixi-sprite :x="0" :y="0" imagePath="logo.png" msg="pixi sprite" />
-         <pixi-sheep />
+         <pixi-sprite :x="400" :y="600" />
+         <pixi-sheep :x="400" :y="1200" /> 
+        <pixi-dog :x="400" :y="1600" /> 
       </pixi-container>
     </pixi-renderer>
   </div>
@@ -18,7 +19,8 @@ import HelloWorld from './components/HelloWorld.vue';
 import PixiRenderer from './pixi/PixiRenderer.vue';
 import PixiSprite from './pixi/PixiSprite.vue';
 import PixiSheep from './pixi/PixiSheep.vue';
-import PixiContainer from './pixi/PixiContainer.vue'
+import PixiDog from './pixi/PixiDog.vue';
+import PixiContainer from './pixi/PixiContainer.vue';
 
 export default {
   data() {
@@ -33,6 +35,7 @@ export default {
     PixiRenderer,
     PixiSprite,
     PixiSheep,
+    PixiDog,
     PixiContainer
   },
 

@@ -1,13 +1,10 @@
 <script>
 export default {
 	inject: ["EventBus", "PIXIWrapper", "DragonBones"],
-	// x, y define the sprite's position in the parent.
-	// imagePath is the path to the image on the server to render as the sprite.
-	props: ["x", "y", "imagePath"],
+	props: ["x", "y"],
 
 	data() {
 		return {
-			sprite: null,
 			armatureDisplay: null,
 			animationNames: [],
 			target: null,
@@ -20,27 +17,7 @@ export default {
 	},
 
 	created() {
-		this.sprite = this.PIXIWrapper.PIXI.Sprite.from("logo.png");
-
-		// Forward the pointerdown event.
-		this.sprite.on("pointerdown", () => this.$emit("pointerdown", this.sprite));
-		// When the PIXI renderer starts.
 		this.EventBus.$on("ready", () => {
-			// Set the initial position.
-			this.sprite.x = 0;
-			this.sprite.y = 0;
-			this.sprite.anchor.set(0.5);
-
-			// Opt-in to interactivity.
-			this.sprite.interactive = true;
-
-			// Add the sprite to the parent container or the root app stage.
-			if (this.$parent.container) {
-				this.$parent.container.addChild(this.sprite);
-			} else {
-				this.PIXIWrapper.PIXIApp.stage.addChild(this.sprite);
-			}
-
 			this.setupDragonbones();
 
 			// // Emit an event for this sprite on every tick.
@@ -97,8 +74,8 @@ export default {
 
 			this.armatureDisplay = factory.buildArmatureDisplay("shizuku", "shizuku");
 			this.armatureDisplay.animation.play("idle_00");
-			this.armatureDisplay.x = 400.0;
-			this.armatureDisplay.y = 500.0;
+			this.armatureDisplay.x = this.x
+			this.armatureDisplay.y = this.y;
 			this.armatureDisplay.scale.set(this.scale, this.scale);
 			this.PIXIWrapper.PIXIApp.stage.addChild(this.armatureDisplay);
 

@@ -41,8 +41,8 @@ export default {
 		console.log(this.DragonBones);
 
 		this.PIXIWrapper.PIXIApp = new PIXI.Application({
-			width: 800,
-			height: 1200,
+			width: this.w,
+			height: this.h,
 			backgroundColor: 0x1099bb,
 			resolution: 1
 			// resolution: window.devicePixelRatio || 1
