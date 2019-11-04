@@ -21,7 +21,13 @@ import PixiSheep from './pixi/PIXISheep.vue'
 import PixiContainer from './pixi/PIXIContainer.vue'
 
 export default {
-  name: 'app',
+  data() {
+    return {
+      pixiWidth: 800,
+      pixiHeight: 600
+    }
+  },
+
   components: {
     HelloWorld,
     PixiRenderer,
