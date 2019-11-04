@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "core-js": "^3.3.2",
+    "dragonbones-runtime": "^5.6.200",
+    "pixi.js": "^5.1.5",
+    "pixi5-dragonbones": "^5.7.0-2b",
     "vue": "^2.6.10"
   },
   "devDependencies": {
