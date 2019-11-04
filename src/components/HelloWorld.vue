@@ -1,13 +1,7 @@
 <template>
-<<<<<<< HEAD
   <div class="hello">
     <h1>{{ msg }}</h1>
   </div>
-=======
-	<div class="hello">
-		<h1>{{ msg }}</h1>
-	</div>
->>>>>>> 6d4e7a6d027052cc43aab7faf6e9db5ee72a2009
 </template>
 
 <script>

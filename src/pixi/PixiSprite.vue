@@ -1,10 +1,6 @@
 <script>
-import * as PIXI from "pixi.js";
-window.PIXI = PIXI; //Solution to use dragonbones with PIXI v5
-const dragonBones = require("pixi5-dragonbones");
-
 export default {
-	inject: ["EventBus", "PIXIWrapper"],
+	inject: ["EventBus", "PIXIWrapper", "DragonBones"],
 	// x, y define the sprite's position in the parent.
 	// imagePath is the path to the image on the server to render as the sprite.
 	props: ["x", "y", "imagePath"],
@@ -44,7 +40,6 @@ export default {
 			} else {
 				this.PIXIWrapper.PIXIApp.stage.addChild(this.sprite);
 			}
-			console.log(this);
 
 			this.setupDragonbones();
 
@@ -58,9 +53,6 @@ export default {
 
 	methods: {
 		setupDragonbones: function() {
-			console.log("setup dragonbones");
-			console.log(this);
-			this.PIXIWrapper.PIXIApp.stop();
 
 			// load spine data
 			this.PIXIWrapper.PIXI.Loader.shared
@@ -74,7 +66,7 @@ export default {
 
 		onAssetsLoaded: function(loader, res) {
 			console.log("on assets loaded");
-			const factory = dragonBones.PixiFactory.factory;
+			const factory = this.DragonBones.PixiFactory.factory;
 			this.target = new this.PIXIWrapper.PIXI.Point();
 
 			this.animationNames = [
@@ -102,8 +94,7 @@ export default {
 				],
 				"shizuku"
 			);
-			console.log(this);
-			console.log(factory);
+
 			this.armatureDisplay = factory.buildArmatureDisplay("shizuku", "shizuku");
 			this.armatureDisplay.animation.play("idle_00");
 			this.armatureDisplay.x = 400.0;
@@ -117,7 +108,7 @@ export default {
 
 			this.PIXIWrapper.PIXI.Ticker.shared.add(this.enterFrameHandler);
 
-			this.PIXIWrapper.PIXIApp.start();
+			this.EventBus.$emit("girlLoaded");
 		},
 
 		touchHandler: function(event) {

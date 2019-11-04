@@ -5,8 +5,11 @@
 	</div>
 </template>
 <script>
+
 import Vue from "vue";
 import * as PIXI from "pixi.js";
+window.PIXI = PIXI; //Solution to use dragonbones with PIXI v5
+const dragonBones = require("pixi5-dragonbones");
 
 export default {
 	props: ["w", "h"],
@@ -19,14 +22,15 @@ export default {
 				PIXIApp: null
 			},
 			// Expose the event bus to all descendants so they can listen for the app-ready event.
-			EventBus: new Vue()
+			EventBus: new Vue(),
 		};
 	},
 	// Allows descendants to inject everything.
 	provide() {
 		return {
 			PIXIWrapper: this.PIXIWrapper,
-			EventBus: this.EventBus
+			EventBus: this.EventBus,
+			DragonBones: dragonBones
 		};
 	},
 
@@ -34,15 +38,18 @@ export default {
 		// Determine the width and height of the renderer wrapper element.
 		const renderCanvas = this.$refs.renderContainer;
 
+		console.log(this.DragonBones);
+
 		this.PIXIWrapper.PIXIApp = new PIXI.Application({
-			width: this.w,
-			height: this.h,
+			width: 800,
+			height: 1200,
 			backgroundColor: 0x1099bb,
 			resolution: 1
-			//resolution: window.devicePixelRatio || 1
+			// resolution: window.devicePixelRatio || 1
 		});
 
-		renderCanvas.appendChild(this.PIXIWrapper.PIXIApp.view);
+        renderCanvas.appendChild(this.PIXIWrapper.PIXIApp.view);
+        this.PIXIWrapper.PIXIApp.stop();
 		this.EventBus.$emit("ready");
 	}
 };

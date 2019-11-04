@@ -64,7 +64,6 @@ export default {
       this.PIXIWrapper.PIXIApp.start();
       this.PIXIWrapper.PIXI.Ticker.shared.add(this.enterFrameHandler);
 
-      console.log(this.armatureDisplay);
     },
 
     touchHandler(event) {

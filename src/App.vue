@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import PixiRenderer from './pixi/PIXIRenderer.vue'
-import PixiSprite from './pixi/PIXISprite.vue'
-import PixiSheep from './pixi/PIXISheep.vue'
-import PixiContainer from './pixi/PIXIContainer.vue'
+import HelloWorld from './components/HelloWorld.vue';
+import PixiRenderer from './pixi/PixiRenderer.vue';
+import PixiSprite from './pixi/PixiSprite.vue';
+import PixiSheep from './pixi/PixiSheep.vue';
+import PixiContainer from './pixi/PixiContainer.vue'
 
 export default {
   data() {
