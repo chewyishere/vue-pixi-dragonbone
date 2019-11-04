@@ -1,12 +1,15 @@
 <template>
   <div class="pixi-sheep">
+    <BtnGrass  :x="200" :y="1000" @mousedown="mouseOnGrass"/>
   </div>
 </template>
 
 
 <script>
+import BtnGrass from "./assets/BtnGrass";
 
 export default {
+  
   inject: ['EventBus', 'PIXIWrapper', 'DragonBones'],
   // x, y define the sprite's position in the parxwent.
   // imagePath is the path to the image on the server to render as the sprite.
@@ -17,8 +20,12 @@ export default {
       target: null,
       armatureDisplay: null,
       scale: 0.5,
-      animationName: []
+      animationName: [],
+      onGrass: false
     }
+  },
+   components: {
+      BtnGrass
   },
 
   created() {
@@ -28,6 +35,12 @@ export default {
   },
 
   methods: {
+    mouseOnGrass(){
+      console.log(this.armatureDisplay);
+      this.onGrass = true;
+      this.armatureDisplay.animation.play('goat_eat_anim', 1);
+    },
+
     SetupDragonBone(){
       this.target = new this.PIXIWrapper.PIXI.Point();
 
@@ -62,7 +75,7 @@ export default {
       this.PIXIWrapper.PIXIApp.stage.on('mousemove', this.touchHandler);
 
       this.PIXIWrapper.PIXIApp.start();
-      this.PIXIWrapper.PIXI.Ticker.shared.add(this.enterFrameHandler);
+      if (!this.onGrass) this.PIXIWrapper.PIXI.Ticker.shared.add(this.enterFrameHandler);
 
     },
 
@@ -75,49 +88,53 @@ export default {
     },
 
     enterFrameHandler() {
-    const armature = this.armatureDisplay.armature;
-    const animation = this.armatureDisplay.animation;
-    const canvas = armature.armatureData.canvas;
+      const armature = this.armatureDisplay.armature;
+      const animation = this.armatureDisplay.animation;
+      const canvas = armature.armatureData.canvas;
 
-    let p = 0.0;
-    const pX = Math.max(Math.min((this.target.x - canvas.x) / (canvas.width * 0.5), 1.0), -1.0);
-    const pY = -Math.max(Math.min((this.target.y - canvas.y) / (canvas.height * 0.5), 1.0), -1.0);
+      let p = 0.0;
+      const pX = Math.max(Math.min((this.target.x - canvas.x) / (canvas.width * 0.5), 1.0), -1.0);
+      const pY = -Math.max(Math.min((this.target.y - canvas.y) / (canvas.height * 0.5), 1.0), -1.0);
 
-    
-    for (const animationName of this.animationNames) {
-        if (animation.hasAnimation(animationName)) {
-            let animationState = animation.getState(animationName, 1);
-            if (!animationState) {
-                animationState = animation.fadeIn(animationName, 0.1, 1, 1, animationName);
+      if(!this.onGrass){
+        for (const animationName of this.animationNames) {
+            if (animation.hasAnimation(animationName)) {
+                let animationState = animation.getState(animationName, 1);
+                if (!animationState) {
+                    animationState = animation.fadeIn(animationName, 0.1, 1, 1, animationName);
+                    if (animationState) {
+                        animationState.resetToPose = false;
+                        animationState.stop();
+                    }
+                }
+
                 if (animationState) {
-                    animationState.resetToPose = false;
-                    animationState.stop();
-                }
+                    switch (animationName) {
+                        case 'goat_look_X':
+                            p = (pX + 1.0) * 0.5;
+                            break;
+
+                        case 'goat_look_Y':
+                            p = (pY + 1.0) * 0.5;
+                            break;
+
+                        case 'goat_idle_anim':
+                            p = (Math.sin(armature.clock.time) + 1.0) * 0.5;
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                    animationState.currentTime = p * animationState.totalTime;
+                  }
+
             }
-
-            if (animationState) {
-                switch (animationName) {
-                    case 'goat_look_X':
-                        p = (pX + 1.0) * 0.5;
-                        break;
-
-                    case 'goat_look_Y':
-                        p = (pY + 1.0) * 0.5;
-                        break;
-
-                    case 'goat_idle_anim':
-                        p = (Math.sin(armature.clock.time) + 1.0) * 0.5;
-                        break;
-                    
-                    default:
-                        break;
-                }
-                animationState.currentTime = p * animationState.totalTime;
-       }
-
-       }
-     }
-  }
+            } 
+    } else {
+      console.log(animation);
+      if(animation.isCompleted) this.onGrass = false;
+    }
+    }
 }
 }
 </script>
